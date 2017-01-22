@@ -18,7 +18,9 @@
 
     <div><label>密码：</label><input name="password"></div>
 
-    <div> <label>工程文件：</label><input type="file" name="materyal"></div>
+    <div> <label>工程文件1：</label><input type="file" name="materyal"></div>
+    <div> <label>工程文件2：</label><input type="file" name="materyal"></div>
+    <div> <label>工程文件3：</label><input type="file" name="materyal"></div>
 
     <div> <input type="submit" value="提交"></div>
 </form>

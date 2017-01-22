@@ -216,4 +216,170 @@ public class CustomWebConfiguare extends WebMvcConfigurerAdapter {
 
 ```
 
-* 文件上传
+* 文件上传  
+Controller代码
+```java
+package com.cn.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.LinkedList;
+
+/**
+ * Created by Administrator on 1/22/2017.
+ */
+@Controller
+public class FileUploadController {
+    
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
+    @PostMapping("/handleRegister")
+    @ResponseBody
+    public String handleRegister(@RequestParam String username, @RequestParam String password, @RequestParam LinkedList<MultipartFile> materyal) {
+        System.out.println(username);
+        System.out.println(password);
+
+        for (int i = 0; i < materyal.size(); i++) {
+            MultipartFile file = materyal.get(i);
+            OutputStream stream = null;
+            if (!file.isEmpty()) {
+                String uploadUrl = "D:\\springprojects\\uploadedfiles\\" + file.getOriginalFilename();
+                try {
+                    byte[] bytes = file.getBytes();
+                    stream =new BufferedOutputStream(new FileOutputStream(new File(uploadUrl)));
+                    stream.write(bytes);
+                    stream.close();
+                } catch (Exception e) {
+                    stream = null;
+                    return "You failed to upload  => " + e.getMessage();
+                }
+            } else {
+                return "You failed to upload  because the file was empty.";
+            }
+        }
+
+        return "success";
+    }
+}
+
+```
+
+register.jsp
+```jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: Administrator
+  Date: 1/22/2017
+  Time: 5:19 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data" action="/handleRegister">
+
+
+    <div><label>用户名：</label><input name="username"></div>
+
+    <div><label>密码：</label><input name="password"></div>
+
+    <div> <label>工程文件1：</label><input type="file" name="materyal"></div>
+    <div> <label>工程文件2：</label><input type="file" name="materyal"></div>
+    <div> <label>工程文件3：</label><input type="file" name="materyal"></div>
+
+    <div> <input type="submit" value="提交"></div>
+</form>
+</body>
+</html>
+```
+在Configuare中配置Bean设置上传文件大小
+```java
+package com.cn.configuare;
+
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
+import org.springframework.web.bind.support.WebBindingInitializer;
+import org.springframework.web.servlet.HandlerInterceptor;
+
+import javax.servlet.MultipartConfigElement;
+
+/**
+ * Created by Administrator on 1/21/2017.
+ */
+@Configuration
+public class CustomConfiguration {
+
+
+    /**
+     * HttpMessageConverters
+     * springboot 官方文档：http://docs.spring.io/spring-boot/docs/2.0.0.BUILD-SNAPSHOT/reference/htmlsingle/
+     * Spring MVC uses the HttpMessageConverter interface to convert HTTP requests and responses.
+     * Sensible defaults are included out of the box, for example Objects can be automatically converted to
+     * JSON (using the Jackson library) or XML (using the Jackson XML extension if available, else using JAXB).
+     * Strings are encoded using UTF-8 by default.
+     *If you need to add or customize converters you can use Spring Boot’s HttpMessageConverters class:
+     * SpringMVC使用HttpMessageConverter接口将HTTP requests and responses转换成JSON数据
+     * 如果你想自定义这个转换器你可以使用SpringBoot的 HttpMessageConverters类
+     * @return
+     */
+    @Bean
+    public HttpMessageConverters customConverters() {
+        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
+        FastJsonConfig fastJsonConfig = new FastJsonConfig();
+        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
+        fastConverter.setFastJsonConfig(fastJsonConfig);
+        HttpMessageConverter<?> converter = fastConverter;
+        return new HttpMessageConverters(converter);
+    }
+
+    /**
+     * Spring MVC uses a WebBindingInitializer to initialize a WebDataBinder for a particular request.
+     * If you create your own ConfigurableWebBindingInitializer @Bean,
+     *  Spring Boot will automatically configure Spring MVC to use it.
+     *
+     * @return
+     */
+    @Bean
+    WebBindingInitializer getCustomDataBinder() {
+        ConfigurableWebBindingInitializer dataBinder = new ConfigurableWebBindingInitializer();
+        return dataBinder;
+    }
+
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        //// 设置文件大小限制 ,超了，页面会抛出异常信息，这时候就需要进行异常信息的处理了;
+        factory.setMaxFileSize("100MB"); //KB,MB
+        /// 设置总上传数据总大小
+        factory.setMaxRequestSize("100MB");
+        //Sets the directory location where files will be stored.
+        //factory.setLocation("路径地址");
+        return factory.createMultipartConfig();
+    }
+
+}
+
+```
+
