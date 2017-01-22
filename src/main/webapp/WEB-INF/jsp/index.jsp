@@ -11,6 +11,6 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END$
+cityName :${city.name},cityCode :${city.cityCode}
   </body>
 </html>
