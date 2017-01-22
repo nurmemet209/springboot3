@@ -1,6 +1,6 @@
 # springboot3
 
-* 本节要点
+* 本节要点  
 1. @ControllerAdvice注解的使用
 2. 全局捕获异常
 3. SpringBoot Application中指定扫描目录
