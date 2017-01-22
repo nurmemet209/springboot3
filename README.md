@@ -421,8 +421,7 @@ public class SampleApplication extends SpringBootServletInitializer {
 
 }
 ```
-
-
+.  
 3. 在src/main/resouces下新建banner.txt，在文件中加入  
 ```properties
 #这个是MANIFEST.MF文件中的版本号 
@@ -444,9 +443,8 @@ ${spring-boot.formatted-version}
 ```properties
 #是否显示Banner
 spring.main.show-banner=false
-```  
-
-
+```
+.  
 5. 通过SpringApplication的setBanner方法自行绘制Banner样式  
 ```java
 package com.cn.app;
