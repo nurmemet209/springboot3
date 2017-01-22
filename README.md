@@ -7,6 +7,7 @@
 4. @Configuration注解
 5. WebBindingInitializer 的全局配置与局部配置
 6. 拦截器
+7. 文件上传
 
 
 
@@ -214,3 +215,5 @@ public class CustomWebConfiguare extends WebMvcConfigurerAdapter {
 }
 
 ```
+
+* 文件上传
