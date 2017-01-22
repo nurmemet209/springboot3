@@ -421,8 +421,7 @@ public class SampleApplication extends SpringBootServletInitializer {
 
 }
 ```
-
-
+.
 3. 在src/main/resouces下新建banner.txt，在文件中加入  
 ```properties
 #这个是MANIFEST.MF文件中的版本号 
