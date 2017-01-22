@@ -384,6 +384,116 @@ public class CustomConfiguration {
 #### SpringBoot Banner设置
 1. 什么是Banner  
 ![](screenshoot/1.png)
-2. 
+2. 修改启动类
+```java
+package com.cn.app;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+
+/**
+ * Created by Administrator on 1/17/2017.
+ */
+
+@SpringBootApplication(scanBasePackages = "com.cn")
+public class SampleApplication extends SpringBootServletInitializer {
+
+
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(SampleApplication.class);
+    }
+
+
+    public static void main(String[] args) {
+        //修改启动方式
+        SpringApplication application=new SpringApplication(SampleApplication.class);
+        //关闭Banner
+        //application.setBannerMode(Banner.Mode.OFF);
+        application.run(args);
+        //SpringApplication.run(SampleApplication.class, args);
+
+
+    }
+
+}
+
+
+```
+3. 在src/main/resouces下新建banner.txt，在文件中加入：
+```properties
+#这个是MANIFEST.MF文件中的版本号 
+${application.version}              
+ 
+#这个是上面的的版本号前面加v后上括号 
+${application.formatted-version}
+ 
+#这个是springboot的版本号 
+${spring-boot.version}             
+ 
+#这个是springboot的版本号 
+${spring-boot.formatted-version}
+```
+运行效果  
+![](screenshoot/2.png)
+3. 在application.properties文件中添加
+```properties
+#是否显示Banner
+spring.main.show-banner=false
+```
+4. 通过SpringApplication的setBanner方法自行绘制Banner样式
+```java
+package com.cn.app;
+
+import org.springframework.boot.Banner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.core.env.Environment;
+
+import java.io.PrintStream;
+
+/**
+ * Created by Administrator on 1/17/2017.
+ */
+
+@SpringBootApplication(scanBasePackages = "com.cn")
+public class SampleApplication extends SpringBootServletInitializer {
+
+
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(SampleApplication.class);
+    }
+
+
+    public static void main(String[] args) {
+        //修改启动方式
+        SpringApplication application=new SpringApplication(SampleApplication.class);
+
+        //自己编写Banner的输出样式
+//        application.setBanner(new Banner() {
+//            @Override
+//            public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
+//
+//            }
+//        });
+        //关闭Banner
+        //application.setBannerMode(Banner.Mode.OFF);
+        application.run(args);
+        //SpringApplication.run(SampleApplication.class, args);
+
+
+    }
+
+}
+
+
+```
 
 
