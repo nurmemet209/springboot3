@@ -9,6 +9,7 @@
 6. 拦截器  
 7. 多文件上传
 8. SpringBoot Banner的设置
+9. Spring 环境变量(Environment)的读取和属性对象的绑定
 
 #### @ControllerAdvice  
 [官网文档](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/bind/annotation/ControllerAdvice.html)  
@@ -496,5 +497,69 @@ public class SampleApplication extends SpringBootServletInitializer {
 
 
 ```
+...  
+#### Spring 环境变量(Environment)的读取和属性对象的绑定
+凡是Spring管理的类(也就是被Spring的注解修饰的类)实现EnvironmentAware接口并且重写方法  
+ setEnvironment就可以启动时获取到系统环境变量和application.properties中定义的属性变量
+ ```java
+package com.cn.controller;
+
+import com.cn.bean.City;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Map;
+
+/**
+ * Created by Administrator on 1/18/2017.
+ */
+@Controller
+public class MyController implements EnvironmentAware{
+
+    @GetMapping("/index")
+    public String index(Map<String, Object> model) {
+        model.put("msg", "welocme");
+        return "index";
+    }
+
+    @GetMapping("/getCity")
+    @ResponseBody
+    public City getCity() {
+        City city = new City();
+        city.setName("上海");
+        city.setCityCode("0212");
+        return city;
+    }
+
+    @GetMapping("/testerror")
+    public String errortest(Map<String, Object> model) {
+        model.put("msg", "welocme");
+        int m = 100 / 0;
+        return "index";
+    }
+
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        String s = environment.getProperty("JAVA_HOME");
+        System.out.println("下面是通过实现EnvironmentAware读取的JAVA_HOME的值");
+        System.out.println(s);
+    }
+}
+
+```
+SpringBoot启动时会输出  
+![](screenshoot/3.png)
+
 
 
