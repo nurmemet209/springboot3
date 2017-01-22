@@ -155,6 +155,7 @@ public class CustomConfiguration {
 ```
 
 * 拦截器  
+不能修改reques的内容但是可以通过抛出异常或者return false来停止本次请求
 编写一个自定义拦截器继承HandlerInterceptor
 ```java
 package com.cn.configuare;
