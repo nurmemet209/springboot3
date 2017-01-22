@@ -1,6 +1,6 @@
 # springboot3
 
-* 本节要点  
+### 本节要点  
 1. @ControllerAdvice注解的使用
 2. 全局捕获异常
 3. SpringBoot Application中指定扫描目录
@@ -8,8 +8,7 @@
 5. WebBindingInitializer 的全局配置与局部配置
 6. 拦截器
 7. 多文件上传
-
-
+###详细
 
 * @ControllerAdvice  
 [官网文档](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/bind/annotation/ControllerAdvice.html)  
