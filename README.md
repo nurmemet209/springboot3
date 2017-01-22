@@ -382,9 +382,9 @@ public class CustomConfiguration {
 
 ```
 #### SpringBoot Banner设置
-1.  什么是Banner  
+1. 什么是Banner  
 ![](screenshoot/1.png)
-2.  修改启动类
+2. 修改启动类
 ```java
 package com.cn.app;
 
