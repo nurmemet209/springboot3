@@ -439,12 +439,12 @@ ${spring-boot.formatted-version}
 ```
 运行效果  
 ![](screenshoot/2.png)
-3. 在application.properties文件中添加
+4. 在application.properties文件中添加
 ```properties
 #是否显示Banner
 spring.main.show-banner=false
 ```
-4. 通过SpringApplication的setBanner方法自行绘制Banner样式
+5. 通过SpringApplication的setBanner方法自行绘制Banner样式
 ```java
 package com.cn.app;
 
