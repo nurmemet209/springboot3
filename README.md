@@ -6,15 +6,15 @@
 3. SpringBoot Application中指定扫描目录
 4. @Configuration注解
 5. WebBindingInitializer 的全局配置与局部配置
-6. 拦截器
+6. 拦截器  
 7. 多文件上传
-###详细
+8. SpringBoot Banner的设置
 
-* @ControllerAdvice  
+#### @ControllerAdvice  
 [官网文档](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/bind/annotation/ControllerAdvice.html)  
 是对Controller的增强,用来定义 @ExceptionHandler, @InitBinder, and @ModelAttribute
 方法,是运行时注解，过多使用可能导致性能问题
-* 全局捕获异常
+#### 全局捕获异常
 ```java
 package com.cn.app;
 
@@ -54,7 +54,7 @@ public class GlobalDefaultExceptionHandler {
 }
 
 ```
-* SpringBoot Application中指定扫描目录
+#### SpringBoot Application中指定扫描目录
 ```java
 package com.cn.app;
 
@@ -88,9 +88,9 @@ public class SampleApplication extends SpringBootServletInitializer {
 
 
 ```
-* @Configuration注解
+#### @Configuration注解
 用于配置Bean,简化SpringMVC的xml配置方式,项目中可以有多个@Configuration类
-* WebBindingInitializer 的全局配置与局部配置  
+#### WebBindingInitializer 的全局配置与局部配置  
 上面的@ControllerAdvice里面的@InitBinder方法是每次调用Controller的
 @RequestMapping修饰的方式掉用是因为运行时通过反射调用所以效率有些低
 下面是全局的配置方式
@@ -154,7 +154,7 @@ public class CustomConfiguration {
 
 ```
 
-* 拦截器  
+#### 拦截器  
 不能修改reques的内容但是可以通过抛出异常或者return false来停止本次请求
 编写一个自定义拦截器继承HandlerInterceptor
 ```java
@@ -215,7 +215,7 @@ public class CustomWebConfiguare extends WebMvcConfigurerAdapter {
 
 ```
 
-* 文件上传  
+#### 文件上传  
 Controller代码
 ```java
 package com.cn.controller;
@@ -381,4 +381,9 @@ public class CustomConfiguration {
 }
 
 ```
+#### SpringBoot Banner设置
+1. 什么是Banner  
+![](screenshoot/1.png)
+2. 
+
 
