@@ -444,8 +444,7 @@ ${spring-boot.formatted-version}
 #是否显示Banner
 spring.main.show-banner=false
 ```
-
-
+.
 5. 通过SpringApplication的setBanner方法自行绘制Banner样式  
 ```java
 package com.cn.app;
