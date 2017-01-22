@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.bind.support.WebBindingInitializer;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
  * Created by Administrator on 1/21/2017.
@@ -51,6 +52,8 @@ public class CustomConfiguration {
         ConfigurableWebBindingInitializer dataBinder = new ConfigurableWebBindingInitializer();
         return dataBinder;
     }
+
+
 
 
 }

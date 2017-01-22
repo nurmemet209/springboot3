@@ -6,6 +6,7 @@
 3. SpringBoot Application中指定扫描目录
 4. @Configuration注解
 5. WebBindingInitializer 的全局配置与局部配置
+6. 拦截器
 
 
 
@@ -88,7 +89,7 @@ public class SampleApplication extends SpringBootServletInitializer {
 
 ```
 * @Configuration注解
-用于配置Bean,简化SpringMVC的xml配置方式
+用于配置Bean,简化SpringMVC的xml配置方式,项目中可以有多个@Configuration类
 * WebBindingInitializer 的全局配置与局部配置  
 上面的@ControllerAdvice里面的@InitBinder方法是每次调用Controller的
 @RequestMapping修饰的方式掉用是因为运行时通过反射调用所以效率有些低
@@ -149,6 +150,66 @@ public class CustomConfiguration {
     }
 
 
+}
+
+```
+
+* 拦截器  
+编写一个自定义拦截器继承HandlerInterceptor
+```java
+package com.cn.configuare;
+
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Created by Administrator on 1/22/2017.
+ */
+
+public class LoginInterceptor implements HandlerInterceptor {
+
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("登录拦截器");
+        //这里必须返回true返回false表示拦截次请求
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+
+    }
+}
+
+```
+```java
+package com.cn.configuare;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+/**
+ * Created by Administrator on 1/22/2017.
+ */
+@Configuration
+public class CustomWebConfiguare extends WebMvcConfigurerAdapter {
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        LoginInterceptor loginInterceptor = new LoginInterceptor();
+        registry.addInterceptor(loginInterceptor);
+        super.addInterceptors(registry);
+    }
 }
 
 ```
